@@ -1,5 +1,7 @@
 package com.codingbaby;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -42,6 +44,50 @@ public class ButtonStatus {
     }
 
 
+
+    //功能按钮动画
+    private ValueAnimator functionAnimator;
+
+    {
+        functionAnimator = ValueAnimator.ofInt(0, 500);
+        functionAnimator.setDuration(2000);
+        functionAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                view.invalidate();
+            }
+        });
+        functionAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                longPress = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+    }
+
+
+
+    public void startAnimation() {
+        if (!functionAnimator.isStarted()) {
+            functionAnimator.start();
+        }
+    }
+
+
     public void drawButton(Canvas canvas, Paint paint) {
 
         if (!longPress) {
@@ -66,7 +112,6 @@ public class ButtonStatus {
         int wordFrom = sp2px(22);
 
         int n = 0;
-
 
         paint.setColor(selectEnglishWord ? Color.BLUE : Color.GRAY);
         canvas.drawCircle(fromX + n * gap, fromY, radius, paint);
@@ -178,8 +223,8 @@ public class ButtonStatus {
         int topButtonX = textSize;
         if (y >= topButtonX && y <= 3 * topButtonX && x >= topButtonX && x <= 3 * topButtonX) {
 
-            selectShortEnglish = true;
-            selectEnglishWord = false;
+            selectEnglishWord = true;
+            selectShortEnglish = false;
 
             return true;
         }
@@ -188,8 +233,8 @@ public class ButtonStatus {
 
         if (y >= topButtonX && y <= 3 * topButtonX && x >= topButtonX + n * gap && x <= 3 * topButtonX + n * gap) {
 
-            selectShortEnglish = false;
-            selectEnglishWord = true;
+            selectEnglishWord = false;
+            selectShortEnglish = true;
 
             return true;
 

@@ -81,7 +81,6 @@ public class CustomTextView extends View {
 
 
     final MediaPlayer mediaPlayer = new MediaPlayer();
-    private List<String> poemRows = new ArrayList<>();
 
 
     private float englishFirstY = 0;
@@ -175,6 +174,14 @@ public class CustomTextView extends View {
 
             if (buttonStatus.selectShortEnglish) {
                 shortEnglish = dataHolder.randShortEnglish();
+            }
+
+            if (buttonStatus.checkFuncTouch(y, x)) {
+                buttonStatus.startAnimation();
+            }
+
+            if (buttonStatus.checkBottomTouch(y, x, getHeight())) {
+                buttonStatus.startAnimation();
             }
 
 
