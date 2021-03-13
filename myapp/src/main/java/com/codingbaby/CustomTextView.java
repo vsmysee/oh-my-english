@@ -287,10 +287,7 @@ public class CustomTextView extends View {
             rows.add(englishWord.substring(start, end + 1));
             rows.add(englishWord.substring(end + 1));
         } else {
-
-            for (String item : theWord.split(" ")) {
-                rows.add(item);
-            }
+            rows.add(theWord);
         }
 
         int textLines = rows.size();
@@ -303,42 +300,46 @@ public class CustomTextView extends View {
         float centerBaselineY = abs / 2;
 
 
-        final String voice = theWord.trim();
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
+        if (start != -1) {
 
-                    File sdCard = Environment.getExternalStorageDirectory();
-                    File dir = new File(sdCard.getAbsolutePath() + "/poem");
-                    if (!dir.exists()) {
-                        dir.mkdir();
-                    }
+            final String voice = theWord.trim();
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
 
-                    File file = new File(dir, voice + ".mp3");
-                    if (!file.exists()) {
-                        file.createNewFile();
-                        URLConnection conn = new URL(mp3Url + voice).openConnection();
-                        InputStream is = conn.getInputStream();
-                        OutputStream outstream = new FileOutputStream(file);
-                        byte[] buffer = new byte[4096];
-                        int len;
-                        while ((len = is.read(buffer)) > 0) {
-                            outstream.write(buffer, 0, len);
+                        File sdCard = Environment.getExternalStorageDirectory();
+                        File dir = new File(sdCard.getAbsolutePath() + "/poem");
+                        if (!dir.exists()) {
+                            dir.mkdir();
                         }
-                        outstream.close();
+
+                        File file = new File(dir, voice + ".mp3");
+                        if (!file.exists()) {
+                            file.createNewFile();
+                            URLConnection conn = new URL(mp3Url + voice).openConnection();
+                            InputStream is = conn.getInputStream();
+                            OutputStream outstream = new FileOutputStream(file);
+                            byte[] buffer = new byte[4096];
+                            int len;
+                            while ((len = is.read(buffer)) > 0) {
+                                outstream.write(buffer, 0, len);
+                            }
+                            outstream.close();
+                        }
+
+                        mediaPlayer.reset();
+                        mediaPlayer.setDataSource(getContext(), Uri.parse("file:" + file.getAbsolutePath()));
+                        mediaPlayer.prepare();
+                        mediaPlayer.start();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
-                    mediaPlayer.reset();
-                    mediaPlayer.setDataSource(getContext(), Uri.parse("file:" + file.getAbsolutePath()));
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+
+        }
 
 
         for (int i = 0; i < textLines; i++) {
