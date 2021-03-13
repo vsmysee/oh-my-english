@@ -15,12 +15,17 @@ public class DataHolder {
 
 
     private static Map<Character, List<String>> english = new LinkedHashMap<>();
+
+
     private static List<String> english_primary1 = new ArrayList<>();
     private static List<String> english_primary2 = new ArrayList<>();
     private static List<String> english_primary3 = new ArrayList<>();
     private static List<String> english_primary4 = new ArrayList<>();
     private static List<String> english_primary5 = new ArrayList<>();
     private static List<String> english_primary6 = new ArrayList<>();
+
+
+    private static List<String> junior = new ArrayList<>();
 
 
     private List<String> shortEnglish = new ArrayList<>();
@@ -51,6 +56,8 @@ public class DataHolder {
 
     public String randEnglish(ButtonStatus buttonStatus) {
         String englishWord;
+
+
         Random rand = new Random();
         Set<Character> characters = english.keySet();
         List<Character> keyList = new ArrayList<>();
@@ -62,6 +69,11 @@ public class DataHolder {
         List<String> wordList = english.get(character);
         rand = new Random();
         englishWord = wordList.get(rand.nextInt(wordList.size()));
+
+        if (buttonStatus.selectJunior) {
+            englishWord = junior.get(rand.nextInt(junior.size()));
+        }
+
 
         if (buttonStatus.english1) {
             index = rand.nextInt(english_primary1.size());
@@ -122,6 +134,8 @@ public class DataHolder {
                 english_primary4.addAll(FileReader.freqEnglish(assets, "cet4/freq4.txt"));
                 english_primary5.addAll(FileReader.freqEnglish(assets, "cet4/freq5.txt"));
                 english_primary6.addAll(FileReader.freqEnglish(assets, "cet4/freq.txt"));
+
+                junior.addAll(FileReader.freqEnglish(assets, "seven.md"));
 
             }
         }).start();

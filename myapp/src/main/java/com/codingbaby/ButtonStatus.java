@@ -18,6 +18,7 @@ public class ButtonStatus {
 
     public boolean selectEnglishWord = true;
     public boolean selectShortEnglish = false;
+    public boolean selectJunior = false;
 
 
     public boolean english1 = false;
@@ -33,7 +34,6 @@ public class ButtonStatus {
     private boolean longPress = false;
 
 
-
     public ButtonStatus(Context context, View view) {
         this.context = context;
         this.view = view;
@@ -42,7 +42,6 @@ public class ButtonStatus {
     public void onLongClick() {
         longPress = !longPress;
     }
-
 
 
     //功能按钮动画
@@ -78,7 +77,6 @@ public class ButtonStatus {
             }
         });
     }
-
 
 
     public void startAnimation() {
@@ -124,6 +122,12 @@ public class ButtonStatus {
         canvas.drawCircle(fromX + n * gap, fromY, radius, paint);
         paint.setColor(Color.WHITE);
         canvas.drawText("短", wordFrom + n * gap, wordY, paint);
+
+        n = 2;
+        paint.setColor(selectJunior ? Color.BLUE : Color.GRAY);
+        canvas.drawCircle(fromX + n * gap, fromY, radius, paint);
+        paint.setColor(Color.WHITE);
+        canvas.drawText("初", wordFrom + n * gap, wordY, paint);
     }
 
 
@@ -225,6 +229,7 @@ public class ButtonStatus {
 
             selectEnglishWord = true;
             selectShortEnglish = false;
+            selectJunior = false;
 
             return true;
         }
@@ -235,6 +240,19 @@ public class ButtonStatus {
 
             selectEnglishWord = false;
             selectShortEnglish = true;
+            selectJunior = false;
+
+            return true;
+
+        }
+
+        n = 2;
+
+        if (y >= topButtonX && y <= 3 * topButtonX && x >= topButtonX + n * gap && x <= 3 * topButtonX + n * gap) {
+
+            selectEnglishWord = false;
+            selectShortEnglish = false;
+            selectJunior = true;
 
             return true;
 
@@ -295,7 +313,6 @@ public class ButtonStatus {
 
         n = 2;
         if (y >= topButtonX && y <= height - textSize && x >= textSize + n * gap && x <= 3 * textSize + n * gap) {
-
 
 
             if (selectEnglishWord) {

@@ -2,8 +2,6 @@ package com.codingbaby;
 
 import android.content.res.AssetManager;
 
-import com.github.promeg.pinyinhelper.Pinyin;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -33,6 +31,25 @@ public class FileReader {
 
 
     public static List<String> freqEnglish(AssetManager assets, String file) {
+
+        List<String> list = new ArrayList<>();
+
+        try (BufferedReader bf = new BufferedReader(new InputStreamReader(assets.open(file)))) {
+            String line;
+            while ((line = bf.readLine()) != null) {
+                if (!isBlank(line)) {
+                    list.add(line);
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public static List<String> junior(AssetManager assets, String file) {
 
         List<String> list = new ArrayList<>();
 

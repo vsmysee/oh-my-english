@@ -35,7 +35,7 @@ public class SplashView extends View {
 
         //draw background
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.RED);
+        paint.setColor(Color.GRAY);
         canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
 
 
@@ -58,10 +58,10 @@ public class SplashView extends View {
         float textHeight = fontMetrics.bottom - fontMetrics.top;
 
         List<String> rows = new ArrayList<>();
-        rows.add("走");
-        rows.add("遍");
-        rows.add("大");
-        rows.add("千");
+        rows.add("我");
+        rows.add("爱");
+        rows.add("英");
+        rows.add("语");
 
         int textLines = rows.size();
 

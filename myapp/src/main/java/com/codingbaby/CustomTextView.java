@@ -1,6 +1,5 @@
 package com.codingbaby;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -64,7 +63,6 @@ public class CustomTextView extends View {
         virtualLineBlue.setColor(Color.GRAY);
         virtualLineBlue.setPathEffect(new DashPathEffect(new float[]{4, 4}, 0));
     }
-
 
 
     private List<LinePoint> drawLinePoint = new ArrayList<>();
@@ -142,7 +140,7 @@ public class CustomTextView extends View {
         canvas.translate(getWidth() / 2, getHeight() / 2);
 
 
-        if (buttonStatus.selectEnglishWord) {
+        if (buttonStatus.selectEnglishWord || buttonStatus.selectJunior) {
             drawEnglishWord(canvas);
         }
 
@@ -165,7 +163,7 @@ public class CustomTextView extends View {
             float x = event.getX();
 
 
-            if (buttonStatus.selectEnglishWord) {
+            if (buttonStatus.selectEnglishWord || buttonStatus.selectJunior) {
                 float v = y - getHeight() / 2;
                 if (v > englishEndY || v < englishFirstY) {
                     englishWord = dataHolder.randEnglish(buttonStatus);
@@ -263,6 +261,8 @@ public class CustomTextView extends View {
         String theWord = englishWord;
         int start = englishWord.indexOf("[");
 
+
+        //找音标
         if (start == -1) {
             String first = theWord.substring(0, 1);
             char c = first.toUpperCase().charAt(0);
@@ -277,6 +277,8 @@ public class CustomTextView extends View {
         }
 
         start = englishWord.indexOf("[");
+
+        //如果找到了
         if (start != -1) {
             theWord = englishWord.substring(0, start);
             rows.add(theWord);
@@ -285,7 +287,10 @@ public class CustomTextView extends View {
             rows.add(englishWord.substring(start, end + 1));
             rows.add(englishWord.substring(end + 1));
         } else {
-            rows.add(theWord);
+
+            for (String item : theWord.split(" ")) {
+                rows.add(item);
+            }
         }
 
         int textLines = rows.size();
